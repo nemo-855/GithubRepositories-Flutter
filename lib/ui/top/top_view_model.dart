@@ -5,13 +5,12 @@ import 'package:github_repositories_flutter/ui/top/top_ui_state.dart';
 
 class TopViewModel extends StateNotifier<TopUiState> {
   final GithubRepository _githubRepository;
-
   TopViewModel(this._githubRepository) : super(
       TopUiState(
           isLoading: true,
           projects: List<ProjectUiModel>.empty()
       )
-  );
+  )
 
   void onInitialized() async {
     try {

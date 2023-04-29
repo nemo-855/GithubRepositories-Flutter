@@ -5,11 +5,11 @@ import 'package:github_repositories_flutter/domain/api_error.dart';
 import 'package:github_repositories_flutter/domain/model/github_project.dart';
 import '../../domain/repository/github_repository.dart';
 
-final githubRepositoryProvider = Provider<GithubRepository>((ref) => GithubRepositoryImpl(ref.watch(githubApiProvider)));
+final githubRepositoryProvider = Provider<GithubRepository>((ref) => _GithubRepositoryImpl(ref.watch(githubApiProvider)));
 
-class GithubRepositoryImpl implements GithubRepository {
+class _GithubRepositoryImpl implements GithubRepository {
   final GithubApi _githubApi;
-  const GithubRepositoryImpl(this._githubApi);
+  const _GithubRepositoryImpl(this._githubApi);
 
   @override
   Future<List<GithubProject>> getAllProjects() async {
