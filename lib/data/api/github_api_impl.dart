@@ -5,15 +5,17 @@ import 'package:github_repositories_flutter/data/api/response/fetch_project_resp
 import 'package:github_repositories_flutter/data/api/url.dart';
 import 'package:github_repositories_flutter/domain/api_error.dart';
 
-final githubApiProvider = Provider<GithubApi>((ref) => GithubApiImpl(ref.watch(dioManagerProvider)));
+final githubApiProvider = Provider<GithubApi>((ref) => _GithubApiImpl(ref.watch(dioManagerProvider)));
 
-class GithubApiImpl implements GithubApi {
+const _nemoUserName = "nemo-855";
+
+class _GithubApiImpl implements GithubApi {
   final DioManager _dioManager;
-  GithubApiImpl(this._dioManager);
+  _GithubApiImpl(this._dioManager);
 
   @override
-  Future<List<FetchProjectResponse>> fetchAllProjects(String userName) async {
-    final response = await _dioManager.dio.get("$githubApiUrl/users/$userName/repos");
+  Future<List<FetchProjectResponse>> fetchAllProjects() async {
+    final response = await _dioManager.dio.get("$githubApiUrl/users/$_nemoUserName/repos");
 
     if (response.statusCode == 200) {
       final dataList = response.data as List<dynamic>;
