@@ -1,0 +1,1 @@
+const String githubApiUrl = "https://api.github.com";
