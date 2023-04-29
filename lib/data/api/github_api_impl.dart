@@ -12,8 +12,9 @@ class GithubApiImpl implements GithubApi {
   GithubApiImpl(this._dioManager);
 
   @override
-  Future<List<FetchProjectResponse>> fetchAllProjects(String userName) async {
-    final response = await _dioManager.dio.get("$githubApiUrl/users/$userName/repos");
+  Future<List<FetchProjectResponse>> fetchAllProjects() async {
+    const nemoUserName = "nemo-855";
+    final response = await _dioManager.dio.get("$githubApiUrl/users/$nemoUserName/repos");
 
     if (response.statusCode == 200) {
       final dataList = response.data as List<dynamic>;

@@ -12,9 +12,9 @@ class GithubRepositoryImpl implements GithubRepository {
   const GithubRepositoryImpl(this._githubApi);
 
   @override
-  Future<List<GithubProject>> getAllProjects(String userName) async {
+  Future<List<GithubProject>> getAllProjects() async {
     try {
-      final response = await _githubApi.fetchAllProjects(userName);
+      final response = await _githubApi.fetchAllProjects();
       return response.map((e) => e.toGithubProject()).toList();
     } catch(e) {
       throw ApiError.unknown(e.toString());
