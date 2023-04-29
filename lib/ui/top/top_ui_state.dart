@@ -12,6 +12,7 @@ class TopUiState with _$TopUiState {
 
   TopUiState onProjectsUpdated(List<GithubProject> projects) {
     return copyWith(
+        isLoading: true,
         projects: projects.map((e) => ProjectUiModel(
           projectId: e.id,
           ownerName: e.owner.name,
