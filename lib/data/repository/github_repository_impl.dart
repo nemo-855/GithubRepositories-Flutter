@@ -1,7 +1,7 @@
 import 'package:github_repositories_flutter/data/api/github_api.dart';
 import 'package:github_repositories_flutter/domain/api_error.dart';
 import 'package:github_repositories_flutter/domain/model/github_project.dart';
-import 'github_repository.dart';
+import '../../domain/repository/github_repository.dart';
 
 class GithubRepositoryImpl implements GithubRepository {
   final GithubApi _githubApi;
