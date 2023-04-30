@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:github_repositories_flutter/ui/chat/chat_page.dart';
+import 'package:github_repositories_flutter/ui/menu/menu_page.dart';
+import 'package:github_repositories_flutter/ui/talk/talk_page.dart';
+import 'package:github_repositories_flutter/ui/top/top_page.dart';
 import 'app_tab.dart';
 
 class AppRoot extends StatefulWidget {
@@ -14,17 +18,26 @@ class _AppRootState extends State<AppRoot> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: IndexedStack(
+        index: _selectedTab.index,
+        children: const [
+          TopPage(),
+          TalkPage(),
+          ChatPage(),
+          MenuPage(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        items: AppTab.values.map((e) =>
-          BottomNavigationBarItem(
-              icon: e.icon,
-              label: e.name,
-          )
-        ).toList(),
+        items: AppTab.values
+            .map((e) => BottomNavigationBarItem(
+                  icon: e.icon,
+                  label: e.name,
+                ))
+            .toList(),
         currentIndex: _selectedTab.index,
         onTap: (int tabIndex) {
-          // TODO 遷移処理
-          setState(() {
+          setState(
+            () {
               _selectedTab = AppTab.values[tabIndex];
             },
           );
