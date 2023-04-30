@@ -10,7 +10,7 @@ class OwnerResponse with _$OwnerResponse {
 
   const factory OwnerResponse({
     required String login,
-    required String avatarUrl,
+    @JsonKey(name: "avatar_url") required  String avatarUrl,
   }) = _OwnerResponse;
 
   factory OwnerResponse.fromJson(Map<String, Object?> json)

@@ -31,7 +31,7 @@ class ProjectUiModel with _$ProjectUiModel {
 
 extension TopUiEvent on TopUiState {
   TopUiState onProjectsUpdated(List<GithubProject> projects) => copyWith(
-      isLoading: true,
+      isLoading: false,
       projects: projects
           .map((e) => ProjectUiModel(
                 projectId: e.id,

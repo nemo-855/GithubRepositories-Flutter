@@ -13,8 +13,8 @@ class FetchProjectResponse with _$FetchProjectResponse {
     required int id,
     required String name,
     required bool private,
-    required String created_at,
-    required String html_url,
+    @JsonKey(name: "created_at") required String createdAt,
+    @JsonKey(name: "html_url") required String htmlUrl,
     required OwnerResponse owner,
   }) = _FetchProjectResponse;
 
@@ -29,8 +29,8 @@ extension ResponseConverter on FetchProjectResponse {
       name: name,
       isPrivate: private,
       owner: owner.toOwner(),
-      htmlUrl: html_url,
-      createdAt: DateTime.parse(created_at),
+      htmlUrl: htmlUrl,
+      createdAt: DateTime.parse(createdAt),
     );
   }
 }
