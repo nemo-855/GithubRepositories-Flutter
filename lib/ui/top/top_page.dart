@@ -51,7 +51,7 @@ class TopPageState extends ConsumerState<TopPage> {
     );
   }
 
-  PreferredSizeWidget _buildAppBar({
+  AppBar _buildAppBar({
     required String pageName,
     required String pageDescription,
     required VoidCallback onPressedSearchButton,
