@@ -47,21 +47,36 @@ class TopPageState extends ConsumerState<TopPage> {
       );
     } else {
       return SafeArea(
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-              crossAxisCount: 2,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context).text("floor_map"),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      crossAxisCount: 2,
+                    ),
+                    primary: false,
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                    itemCount: state.projects.length,
+                    itemBuilder: (context, index) {
+                      return _buildProjectCard(
+                        uiModel: state.projects[index],
+                        onPressed: onProjectCardPressed,
+                      );
+                    }
+                )
+              ],
             ),
-            primary: false,
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            itemCount: state.projects.length,
-            itemBuilder: (context, index) {
-              return _buildProjectCard(
-                  uiModel: state.projects[index],
-                  onPressed: onProjectCardPressed,
-              );
-            }
           )
       );
     }
@@ -105,7 +120,7 @@ class TopPageState extends ConsumerState<TopPage> {
                                     uiModel.name,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context).textTheme.bodyLarge,
+                                    style: Theme.of(context).textTheme.bodyMedium,
                                 )
                             ),
                             const Icon(Icons.arrow_circle_right_sharp),
