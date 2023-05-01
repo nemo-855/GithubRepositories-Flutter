@@ -15,6 +15,8 @@ class TopViewModel extends StateNotifier<TopUiState> {
   TopViewModel(this._githubRepository) : super(
       TopUiState(
           isLoading: true,
+          pageName: "",
+          pageDescription: "",
           projectsSectionTitle: "",
           projects: List<ProjectUiModel>.empty()
       )
@@ -29,7 +31,15 @@ class TopViewModel extends StateNotifier<TopUiState> {
     }
   }
 
-  void onProjectsTitleSet({required String title}) {
-    state = state.onProjectsTitleSet(title);
+  void onTextAssetSet({
+    required String pageName,
+    required String pageDescription,
+    required String projectsSectionTitle,
+  }) {
+    state = state.onTextAssetSet(
+        pageName: pageName,
+        pageDescription: pageDescription,
+        projectsSectionTitle: projectsSectionTitle
+    );
   }
 }
