@@ -47,15 +47,21 @@ class TopPageState extends ConsumerState<TopPage> {
       );
     } else {
       return SafeArea(
-          child: GridView.count(
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              crossAxisCount: 2,
+            ),
             primary: false,
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            crossAxisCount: 2,
-            children: state.projects
-                .map((e) => _buildProjectCard(uiModel: e, onPressed: onProjectCardPressed))
-                .toList(),
+            itemCount: state.projects.length,
+            itemBuilder: (context, index) {
+              return _buildProjectCard(
+                  uiModel: state.projects[index],
+                  onPressed: onProjectCardPressed,
+              );
+            }
           )
       );
     }
