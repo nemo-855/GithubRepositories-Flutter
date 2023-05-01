@@ -15,6 +15,7 @@ class TopViewModel extends StateNotifier<TopUiState> {
   TopViewModel(this._githubRepository) : super(
       TopUiState(
           isLoading: true,
+          projectsSectionTitle: "",
           projects: List<ProjectUiModel>.empty()
       )
   );
@@ -26,5 +27,9 @@ class TopViewModel extends StateNotifier<TopUiState> {
     } catch (e) {
       // TODO Snackbar State的なものを作る
     }
+  }
+
+  void onProjectsTitleSet({required String title}) {
+    state = state.onProjectsTitleSet(title);
   }
 }

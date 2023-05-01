@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,11 +19,15 @@ class TopPageState extends ConsumerState<TopPage> {
 
     final topViewModel = ref.read(topViewModelProvider.notifier);
     topViewModel.onInitialized();
+
+    // FIXME このアセットのパスと、jsonのキーのハードコーディングを辞めたい
+    DefaultAssetBundle.of(context).loadString('assets/locales/strings.json').then((value) =>
+      topViewModel.onProjectsTitleSet(title: jsonDecode(value)["all_projects"])
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final topViewModel = ref.watch(topViewModelProvider.notifier);
     final state = ref.watch(topViewModelProvider);
 
     return Scaffold(
@@ -53,7 +58,7 @@ class TopPageState extends ConsumerState<TopPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context).text("floor_map"),
+                  state.projectsSectionTitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyLarge,
@@ -86,54 +91,50 @@ class TopPageState extends ConsumerState<TopPage> {
     required ProjectUiModel uiModel,
     required VoidCallback onPressed,
   }) {
-    return Expanded(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Expanded(
-                  child: Image.network(uiModel.ownerImage)
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 36,
-                child: ClipRect(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                        child: Container(
-                          width: double.infinity,
-                          color: Colors.white.withOpacity(0.0),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Flexible(
-                                child: Text(
-                                    uiModel.name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context).textTheme.bodyMedium,
-                                )
-                            ),
-                            const Icon(Icons.arrow_circle_right_sharp),
-                          ],
-                        ),
-                      )
-                    ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Image.network(uiModel.ownerImage),
+          SizedBox(
+            width: double.infinity,
+            height: 36,
+            child: ClipRect(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                    child: Container(
+                      width: double.infinity,
+                      color: Colors.white.withOpacity(0.0),
+                    ),
                   ),
-                ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Flexible(
+                            child: Text(
+                              uiModel.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            )
+                        ),
+                        const Icon(Icons.arrow_circle_right_sharp),
+                      ],
+                    ),
+                  )
+                ],
               ),
-            ],
+            ),
           ),
-        )
+        ],
+      ),
     );
   }
 }
