@@ -21,7 +21,8 @@ class ProjectUiModel with _$ProjectUiModel {
   @JsonSerializable(explicitToJson: true)
 
   const factory ProjectUiModel({
-    required int projectId,
+    required int id,
+    required String name,
     required String ownerName,
     required String ownerImage
   }) = _ProjectUiModel;
@@ -34,7 +35,8 @@ extension TopUiEvent on TopUiState {
       isLoading: false,
       projects: projects
           .map((e) => ProjectUiModel(
-                projectId: e.id,
+                id: e.id,
+                name: e.name,
                 ownerName: e.owner.name,
                 ownerImage: e.owner.avatarUrl,
               ))
