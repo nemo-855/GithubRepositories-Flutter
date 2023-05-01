@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:github_repositories_flutter/data/api/github_api.dart';
 import 'package:github_repositories_flutter/data/api/github_api_impl.dart';
+import 'package:github_repositories_flutter/data/api/response/fetch_project_response.dart';
 import 'package:github_repositories_flutter/domain/api_error.dart';
 import 'package:github_repositories_flutter/domain/model/github_project.dart';
 import '../../domain/repository/github_repository.dart';

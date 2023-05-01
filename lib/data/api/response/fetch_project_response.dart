@@ -7,26 +7,30 @@ part 'fetch_project_response.g.dart';
 
 @freezed
 class FetchProjectResponse with _$FetchProjectResponse {
+  @JsonSerializable(explicitToJson: true)
+
   const factory FetchProjectResponse({
     required int id,
     required String name,
     required bool private,
-    required String created_at,
-    required String html_url,
+    @JsonKey(name: "created_at") required String createdAt,
+    @JsonKey(name: "html_url") required String htmlUrl,
     required OwnerResponse owner,
   }) = _FetchProjectResponse;
 
   factory FetchProjectResponse.fromJson(Map<String, Object?> json)
-    => _$FetchProjectResponse(json);
+    => _$FetchProjectResponseFromJson(json);
+}
 
+extension ResponseConverter on FetchProjectResponse {
   GithubProject toGithubProject() {
     return GithubProject(
-        id: id,
-        name: name,
-        isPrivate: private,
-        owner: owner.toOwner(),
-        htmlUrl: html_url,
-        createdAt: DateTime.parse(created_at),
+      id: id,
+      name: name,
+      isPrivate: private,
+      owner: owner.toOwner(),
+      htmlUrl: htmlUrl,
+      createdAt: DateTime.parse(createdAt),
     );
   }
 }

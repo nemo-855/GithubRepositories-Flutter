@@ -25,8 +25,40 @@ final ThemeData appTheme = ThemeData(
     unselectedItemColor: Colors.grey,
   ),
   textTheme: const TextTheme(
+    bodySmall: TextStyle(
+      fontSize: 12.0,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+    ),
     bodyMedium: TextStyle(
-      color: Color(0xFF4A148C),
+      fontSize: 14.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
+    bodyLarge: TextStyle(
+      fontSize: 20.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
+    displayLarge: TextStyle(
+      fontSize: 32.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
+    displayMedium: TextStyle(
+      fontSize: 24.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
+    titleMedium: TextStyle(
+      fontSize: 16.0,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
+    ),
+    titleSmall: TextStyle(
+      fontSize: 14.0,
+      fontWeight: FontWeight.normal,
+      color: Colors.black,
     ),
   ),
 );
