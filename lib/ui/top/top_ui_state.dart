@@ -10,6 +10,8 @@ class TopUiState with _$TopUiState {
 
   const factory TopUiState({
     required bool isLoading,
+    required String pageName,
+    required String pageDescription,
     required String projectsSectionTitle,
     required List<ProjectUiModel> projects,
   }) = _TopUiState;
@@ -43,7 +45,13 @@ extension TopUiEvent on TopUiState {
       ))
           .toList());
 
-  TopUiState onProjectsTitleSet(String text) => copyWith(
-      projectsSectionTitle: text
+  TopUiState onTextAssetSet({
+    required String pageName,
+    required String pageDescription,
+    required String projectsSectionTitle,
+  }) => copyWith(
+      pageName: pageName,
+      pageDescription: pageDescription,
+      projectsSectionTitle: projectsSectionTitle,
   );
 }

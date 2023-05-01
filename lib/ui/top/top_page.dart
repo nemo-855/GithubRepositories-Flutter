@@ -22,7 +22,11 @@ class TopPageState extends ConsumerState<TopPage> {
 
     // FIXME このアセットのパスと、jsonのキーのハードコーディングを辞めたい
     DefaultAssetBundle.of(context).loadString('assets/locales/strings.json').then((value) =>
-      topViewModel.onProjectsTitleSet(title: jsonDecode(value)["all_projects"])
+      topViewModel.onTextAssetSet(
+          pageName: jsonDecode(value)["top_page_name"],
+          pageDescription: jsonDecode(value)["top_page_description"],
+          projectsSectionTitle: jsonDecode(value)["all_projects"],
+      )
     );
   }
 
@@ -31,6 +35,13 @@ class TopPageState extends ConsumerState<TopPage> {
     final state = ref.watch(topViewModelProvider);
 
     return Scaffold(
+      appBar: _buildAppBar(
+          pageName: state.pageName,
+          pageDescription: state.pageDescription,
+          onPressedSearchButton: () => {
+            // TODO 実装
+          }
+      ),
       body: _buildScaffoldBody(
           state: state,
           onProjectCardPressed: () => {
@@ -39,50 +50,80 @@ class TopPageState extends ConsumerState<TopPage> {
       )
     );
   }
+
+  PreferredSizeWidget _buildAppBar({
+    required String pageName,
+    required String pageDescription,
+    required VoidCallback onPressedSearchButton,
+  }) {
+    return AppBar(
+      leadingWidth: double.infinity,
+      leading: Container(
+        padding: const EdgeInsets.only(left: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              pageName,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+            ),
+            Text(
+              pageDescription,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
+            )
+          ],
+        ),
+      ),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: onPressedSearchButton,
+        )
+      ],
+    );
+  }
   
   Widget _buildScaffoldBody({
     required TopUiState state,
     required VoidCallback onProjectCardPressed,
   }) {
     if (state.isLoading) {
-      return const SafeArea(
-          child: Center(
-            child: CircularProgressIndicator(),
-          )
+      return const Center(
+        child: CircularProgressIndicator(),
       );
     } else {
-      return SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  state.projectsSectionTitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                      crossAxisCount: 2,
-                    ),
-                    primary: false,
-                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-                    itemCount: state.projects.length,
-                    itemBuilder: (context, index) {
-                      return _buildProjectCard(
-                        uiModel: state.projects[index],
-                        onPressed: onProjectCardPressed,
-                      );
-                    }
-                )
-              ],
+      return SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              state.projectsSectionTitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
-          )
+            GridView.builder(
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  crossAxisCount: 2,
+                ),
+                primary: false,
+                padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                itemCount: state.projects.length,
+                itemBuilder: (context, index) {
+                  return _buildProjectCard(
+                    uiModel: state.projects[index],
+                    onPressed: onProjectCardPressed,
+                  );
+                }
+            )
+          ],
+        ),
       );
     }
   }

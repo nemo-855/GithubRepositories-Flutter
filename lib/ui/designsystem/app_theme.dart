@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 final ThemeData appTheme = ThemeData(
+  appBarTheme: const AppBarTheme(
+    toolbarHeight: 80.0,
+  ),
   colorScheme: ColorScheme.fromSwatch(
     primarySwatch: const MaterialColor(
       0xFF000000,
