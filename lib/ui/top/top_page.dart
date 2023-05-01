@@ -82,14 +82,14 @@ class TopPageState extends ConsumerState<TopPage> {
                     alignment: Alignment.center,
                     children: [
                       BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                        filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
                         child: Container(
                           width: double.infinity,
                           color: Colors.white.withOpacity(0.0),
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,12 +102,7 @@ class TopPageState extends ConsumerState<TopPage> {
                                     style: Theme.of(context).textTheme.bodyLarge,
                                 )
                             ),
-                            IconButton(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                              constraints: const BoxConstraints(),
-                              onPressed: onPressed,
-                              icon: const Icon(Icons.arrow_circle_right_sharp),
-                            ),
+                            const Icon(Icons.arrow_circle_right_sharp),
                           ],
                         ),
                       )
