@@ -32,10 +32,11 @@ final ThemeData appTheme = ThemeData(
     ),
     bodyMedium: TextStyle(
       fontSize: 14.0,
+      fontWeight: FontWeight.bold,
       color: Colors.black,
     ),
     bodyLarge: TextStyle(
-      fontSize: 14.0,
+      fontSize: 20.0,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     ),
