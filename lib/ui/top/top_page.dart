@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:github_repositories_flutter/ui/top/top_ui_state.dart';
@@ -32,6 +33,7 @@ class TopPageState extends ConsumerState<TopPage> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = ref.read(topViewModelProvider.notifier);
     final state = ref.watch(topViewModelProvider);
 
     return Scaffold(
@@ -47,6 +49,9 @@ class TopPageState extends ConsumerState<TopPage> {
           onProjectCardPressed: () => {
             // TODO 実装
           },
+          onCarouselPageChanged: (index) => {
+            viewModel.onCarouselPageChanged(newIndex: index)
+          }
       )
     );
   }
@@ -88,6 +93,7 @@ class TopPageState extends ConsumerState<TopPage> {
   Widget _buildScaffoldBody({
     required TopUiState state,
     required VoidCallback onProjectCardPressed,
+    required Function(int index) onCarouselPageChanged,
   }) {
     if (state.isLoading) {
       return const Center(
@@ -99,6 +105,14 @@ class TopPageState extends ConsumerState<TopPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _buildCarousel(
+                uiModel: state.carouselUiModel,
+                onPageChanged: onCarouselPageChanged,
+            ),
+            const SizedBox(
+              width: double.infinity,
+              height: 16,
+            ),
             Text(
               state.projectsSectionTitle,
               maxLines: 1,
@@ -175,6 +189,74 @@ class TopPageState extends ConsumerState<TopPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCarousel({
+    required CarouselUiModel uiModel,
+    required Function(int index) onPageChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: double.infinity,
+          height: 100,
+          child: CarouselSlider.builder(
+            itemCount: uiModel.images.length,
+            options: CarouselOptions(
+              scrollDirection: Axis.horizontal,
+              enableInfiniteScroll: false,
+              viewportFraction: 1.0,
+              onPageChanged: (int index, CarouselPageChangedReason reason) => {
+                onPageChanged(index)
+              }
+            ),
+            itemBuilder:
+                (BuildContext context, int itemIndex, int pageViewIndex) =>
+                    _buildCarouselCard(uiModel.images[itemIndex]),
+          ),
+        ),
+        _buildDotsIndicator(
+            itemCount: uiModel.images.length,
+            currentIndex: uiModel.currentIndex,
+        )
+      ],
+    );
+  }
+
+  Widget _buildCarouselCard(String image) {
+    return Container(
+        width: double.infinity,
+        margin: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Image(
+            image: NetworkImage(image),
+            fit: BoxFit.cover,
+          ),
+        )
+    );
+  }
+
+  Widget _buildDotsIndicator({
+    required int itemCount,
+    required int currentIndex
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List<Widget>.generate(
+          itemCount,
+          (int index) => Container(
+                width: 8.0,
+                height: 8.0,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 2.0),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: currentIndex == index ? Colors.black : Colors.grey),
+              )
       ),
     );
   }
