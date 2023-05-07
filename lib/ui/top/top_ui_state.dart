@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:github_repositories_flutter/domain/model/Sponsore.dart';
 import 'package:github_repositories_flutter/domain/model/github_project.dart';
 
 part 'top_ui_state.freezed.dart';
@@ -10,6 +11,7 @@ class TopUiState with _$TopUiState {
 
   const factory TopUiState({
     required bool isLoading,
+    required CarouselUiModel carouselUiModel,
     required String pageName,
     required String pageDescription,
     required String projectsSectionTitle,
@@ -17,6 +19,18 @@ class TopUiState with _$TopUiState {
   }) = _TopUiState;
 
   factory TopUiState.fromJson(Map<String, dynamic> json) => _$TopUiStateFromJson(json);
+}
+
+@freezed
+class CarouselUiModel with _$CarouselUiModel {
+  @JsonSerializable(explicitToJson: true)
+
+  const factory CarouselUiModel({
+    required List<String> images,
+    required int currentIndex,
+  }) = _CarouselUiModel;
+
+  factory CarouselUiModel.fromJson(Map<String, dynamic> json) => _$CarouselUiModelFromJson(json);
 }
 
 @freezed
@@ -34,8 +48,15 @@ class ProjectUiModel with _$ProjectUiModel {
 }
 
 extension TopUiEvent on TopUiState {
-  TopUiState onProjectsUpdated(List<GithubProject> projects) => copyWith(
+  TopUiState onProjectsUpdated({
+    required List<GithubProject> projects,
+    required List<Sponsor> sponsors,
+  }) => copyWith(
       isLoading: false,
+      carouselUiModel: CarouselUiModel(
+        images: sponsors.map((e) => e.imageUrl).toList(),
+        currentIndex: 0,
+      ),
       projects: projects
           .map((e) => ProjectUiModel(
         id: e.id,
@@ -53,5 +74,13 @@ extension TopUiEvent on TopUiState {
       pageName: pageName,
       pageDescription: pageDescription,
       projectsSectionTitle: projectsSectionTitle,
+  );
+
+  TopUiState onCarouselPageChanged({
+    required int newIndex
+  }) => copyWith(
+    carouselUiModel: carouselUiModel.copyWith(
+      currentIndex: newIndex
+    )
   );
 }

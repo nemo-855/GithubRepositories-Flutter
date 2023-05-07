@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:github_repositories_flutter/domain/model/Sponsore.dart';
 import 'package:github_repositories_flutter/domain/model/github_project.dart';
 import 'package:github_repositories_flutter/domain/repository/github_repository.dart';
 import 'package:github_repositories_flutter/ui/top/top_ui_state.dart';
@@ -17,6 +18,10 @@ class TopViewModel extends StateNotifier<TopUiState> {
           isLoading: true,
           pageName: "",
           pageDescription: "",
+          carouselUiModel: CarouselUiModel(
+            images: List<String>.empty(),
+            currentIndex: 0,
+          ),
           projectsSectionTitle: "",
           projects: List<ProjectUiModel>.empty()
       )
@@ -24,9 +29,14 @@ class TopViewModel extends StateNotifier<TopUiState> {
 
   void onInitialized() async {
     try {
-      final List<GithubProject> projects = await _githubRepository.getAllProjects();
-      state = state.onProjectsUpdated(projects);
-    } catch (e) {
+      final Future<List<GithubProject>> projects = _githubRepository.getAllProjects();
+      final Future<List<Sponsor>> sponsors = _githubRepository.getSponsors();
+
+      state = state.onProjectsUpdated(
+          projects: await projects,
+          sponsors: await sponsors,
+      );
+    } on Exception catch (_, e) {
       // TODO Snackbar State的なものを作る
     }
   }
@@ -41,5 +51,9 @@ class TopViewModel extends StateNotifier<TopUiState> {
         pageDescription: pageDescription,
         projectsSectionTitle: projectsSectionTitle
     );
+  }
+
+  void onCarouselPageChanged({required int newIndex}) {
+    state = state.onCarouselPageChanged(newIndex: newIndex);
   }
 }
