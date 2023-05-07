@@ -18,22 +18,19 @@ class TopPageState extends ConsumerState<TopPage> {
   void initState() {
     super.initState();
 
-    final topViewModel = ref.read(topViewModelProvider.notifier);
-    topViewModel.onInitialized();
+    ref.read(topViewModelProvider.notifier).onInitialized();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     // FIXME このアセットのパスと、jsonのキーのハードコーディングを辞めたい
     DefaultAssetBundle.of(context).loadString('assets/locales/strings.json').then((value) =>
-      topViewModel.onTextAssetSet(
+        ref.read(topViewModelProvider.notifier).onTextAssetSet(
           pageName: jsonDecode(value)["top_page_name"],
           pageDescription: jsonDecode(value)["top_page_description"],
           projectsSectionTitle: jsonDecode(value)["all_projects"],
       )
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final viewModel = ref.read(topViewModelProvider.notifier);
     final state = ref.watch(topViewModelProvider);
 
     return Scaffold(
@@ -50,7 +47,7 @@ class TopPageState extends ConsumerState<TopPage> {
             // TODO 実装
           },
           onCarouselPageChanged: (index) => {
-            viewModel.onCarouselPageChanged(newIndex: index)
+            ref.read(topViewModelProvider.notifier).onCarouselPageChanged(newIndex: index)
           }
       )
     );
